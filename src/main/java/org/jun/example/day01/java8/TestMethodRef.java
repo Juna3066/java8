@@ -16,10 +16,10 @@ import org.junit.Test;
  * 			  （可以将方法引用理解为 Lambda 表达式的另外一种表现形式）
  * 
  * 1. 对象的引用 :: 实例方法名
+ * 2. 类名 :: 实例方法名
+ * 3. 类名 :: 静态方法名
  * 
- * 2. 类名 :: 静态方法名
- * 
- * 3. 类名 :: 实例方法名
+ *
  * 
  * 注意：
  * 	 ①方法引用所引用的方法的参数列表与返回值类型，需要与函数式接口中抽象方法的参数列表和返回值类型保持一致！
@@ -44,7 +44,6 @@ public class TestMethodRef {
 		System.out.println(strs.length);
 		
 		System.out.println("--------------------------");
-		
 		Function<Integer, Employee[]> fun2 = Employee[] :: new;
 		Employee[] emps = fun2.apply(20);
 		System.out.println(emps.length);
@@ -54,8 +53,11 @@ public class TestMethodRef {
 	@Test
 	public void test7(){
 		Function<String, Employee> fun = Employee::new;
-		
+		Employee e1 = fun.apply("小明");
+		System.out.println("小明 = " + e1);
 		BiFunction<String, Integer, Employee> fun2 = Employee::new;
+		Employee e2 = fun2.apply("小明", 20);
+		System.out.println("e2 = " + e2);
 	}
 	
 	@Test
@@ -68,30 +70,7 @@ public class TestMethodRef {
 		Supplier<Employee> sup2 = Employee::new;
 		System.out.println(sup2.get());
 	}
-	
-	//类名 :: 实例方法名
-	@Test
-	public void test5(){
-		BiPredicate<String, String> bp = (x, y) -> x.equals(y);
-		System.out.println(bp.test("abcde", "abcde"));
-		
-		System.out.println("-----------------------------------------");
-		
-		BiPredicate<String, String> bp2 = String::equals;
-		System.out.println(bp2.test("abc", "abc"));
-		
-		System.out.println("-----------------------------------------");
-		
-		
-		Function<Employee, String> fun = (e) -> e.show();
-		System.out.println(fun.apply(new Employee()));
-		
-		System.out.println("-----------------------------------------");
-		
-		Function<Employee, String> fun2 = Employee::show;
-		System.out.println(fun2.apply(new Employee()));
-		
-	}
+
 	
 	//类名 :: 静态方法名
 	@Test
@@ -102,7 +81,8 @@ public class TestMethodRef {
 		
 		Comparator<Integer> com2 = Integer::compare;
 	}
-	
+
+	//类名 :: 静态方法名
 	@Test
 	public void test3(){
 		BiFunction<Double, Double, Double> fun = (x, y) -> Math.max(x, y);
@@ -112,6 +92,31 @@ public class TestMethodRef {
 		
 		BiFunction<Double, Double, Double> fun2 = Math::max;
 		System.out.println(fun2.apply(1.2, 1.5));
+	}
+
+	//就是这么规定的
+	//类名 :: 实例方法名
+	@Test
+	public void test5(){
+		BiPredicate<String, String> bp = (x, y) -> x.equals(y);
+		System.out.println(bp.test("abcde", "abcde"));
+
+		System.out.println("-----------------------------------------");
+
+		BiPredicate<String, String> bp2 = String::equals;
+		System.out.println(bp2.test("abc", "abc"));
+
+		System.out.println("-----------------------------------------");
+
+
+		Function<Employee, String> fun = (e) -> e.show();
+		System.out.println(fun.apply(new Employee()));
+
+		System.out.println("-----------------------------------------");
+
+		Function<Employee, String> fun2 = Employee::show;
+		System.out.println(fun2.apply(new Employee()));
+
 	}
 
 	//对象的引用 :: 实例方法名
@@ -127,7 +132,8 @@ public class TestMethodRef {
 		Supplier<String> sup2 = emp::getName;
 		System.out.println(sup2.get());
 	}
-	
+
+	//对象的引用 :: 实例方法名
 	@Test
 	public void test1(){
 		PrintStream ps = System.out;

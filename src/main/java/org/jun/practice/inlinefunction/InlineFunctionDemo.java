@@ -1,12 +1,11 @@
 package org.jun.practice.inlinefunction;
 
-import org.jun.practice.lambda.Emp;
+import org.jun.practice.entity.Emp;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.function.*;
 
 /**

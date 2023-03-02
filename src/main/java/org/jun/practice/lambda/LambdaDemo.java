@@ -1,5 +1,6 @@
 package org.jun.practice.lambda;
 
+import org.jun.practice.entity.Emp;
 import org.junit.Test;
 
 import java.util.*;
