@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.jun.practice.enums.Status;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +14,9 @@ public class Emp {
     private long id;
     private String name;
     private int age;
+    private int sex;
     private double salary;
+    private Status status;
 
     public Emp(String name, double salary) {
         this.name = name;

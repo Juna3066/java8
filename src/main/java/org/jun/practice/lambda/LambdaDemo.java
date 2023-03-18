@@ -1,6 +1,7 @@
 package org.jun.practice.lambda;
 
 import org.jun.practice.entity.Emp;
+import org.jun.practice.enums.Status;
 import org.junit.Test;
 
 import java.util.*;
@@ -31,13 +32,13 @@ import java.util.*;
 public class LambdaDemo {
 
     List<Emp> empList = Arrays.asList(
-            new Emp(100L,"李一",27,24000),
-            new Emp(100L,"刘二",23,15000),
-            new Emp(100L,"张三",24,13000),
-            new Emp(100L,"李四",26,30000),
-            new Emp(100L,"王五",30,35000),
-            new Emp(100L,"小刘",35,40000),
-            new Emp(100L,"田七",25,21500)
+            new Emp(100L,"李一",27,1,24000, Status.OK),
+            new Emp(100L,"刘二",23,1,15000, Status.OK),
+            new Emp(100L,"张三",24,1,13000, Status.OK),
+            new Emp(100L,"李四",26,1,30000, Status.OK),
+            new Emp(100L,"王五",30,2,35000, Status.OK),
+            new Emp(100L,"小刘",35,2,40000, Status.OK),
+            new Emp(100L,"田七",2,25,21500, Status.OK)
 
     );
 

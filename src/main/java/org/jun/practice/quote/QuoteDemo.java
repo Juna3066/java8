@@ -1,6 +1,7 @@
 package org.jun.practice.quote;
 
 import org.jun.practice.entity.Emp;
+import org.jun.practice.enums.Status;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -38,7 +39,7 @@ public class QuoteDemo {
     @Test
     public void demo01() {
         //01对象名::实例方法名
-        Emp emp = new Emp(100L, "刘军军", 27, 30000);
+        Emp emp = new Emp(100L, "刘军军", 27,1, 30000, Status.OK);
         //Supplier<String> supplier = () -> emp.getName();
         Supplier<String> supplier = emp::getName;
         System.out.println("name = " + supplier.get());
