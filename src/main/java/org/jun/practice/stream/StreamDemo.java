@@ -18,6 +18,8 @@ import java.util.stream.*;
  * 2.流不改变源对象,返回新的Stream
  * 3.流操作是延迟的,会等到需要结果的时候才执行。(惰性求值,遇到终止操作，所有操作才一次全部执行)
  *
+ * 口诀 流不存值、中操返新、惰性求值、终止后流失效
+ *
  * 三步骤：
  *      创建操作：
  *
@@ -76,7 +78,7 @@ public class StreamDemo {
 
     /**
      * 中间操作
-     *      1.筛选与切片（筛选 去重 截断 跳过）
+     *      1.筛选去重与切片（筛选 去重 截断 跳过）
      *          Stream的filter接口
      *          Stream的distinct接口（通过所生成元素的hashCode和equals方法去除重复元素）
      *          Stream的limit接口
@@ -93,14 +95,14 @@ public class StreamDemo {
      */
     @Test
     public void demo2() {
-        //middleOpt01();
-        //middleOpt02();
+        middleOpt01();
+        middleOpt02();
         middleOpt03();
     }
 
     /**
      * 终止操作
-     *      匹配查找
+     *      1.匹配查找
      *          anyMatch 返回true false
      *          allMatch 返回true false
      *          noneMatch 返回true false
@@ -113,14 +115,19 @@ public class StreamDemo {
      *          max 返回Optional<T>
      *          min 返回Optional<T>
      *
-     *      规约（map-reduce）
+     *      2.规约（map-reduce）
      *          reduce(初始值，累加器) 返回值
      *          reduce(累加器) 返回Optional<值>
      *
-     *      收集
+     *      3.收集
      *      * collect(收集器实例)
      *      *      参数是Collector接口的实例,
      *             将流汇总收集（比如收集到List Set Map），转化(收集)为其他形式。
+     *
+     *      3基础
+     *      个数、规约到单个值、最大最小元素、
+     *      元素某属性求平均值、求和、求汇总
+     *      连接、分组
      *
      *      Collectors提供了很多静态方法，快速创建常见收集器实例  常用用法：
      *
@@ -130,26 +137,29 @@ public class StreamDemo {
      *          collect(Collectors.toCollection(ArrayList::new)) 元素收集到 创建的集合
      *     2.流中元素数量获取
      *          collect(Collectors.counting()) 返回long数量
+     *     6.收集器的规约 获取单个值
+     *          collect(Collectors.reducing(0.0, Emp::getSalary, Double::sum))  流中的元素 收集结合为 单个值
+     *
+     *     5.获取最大最小值 返回Option<T>
+     *          collect(Collectors.minBy(Comparator.comparingDouble(Emp::getSalary)));
+     *          max/minBy 类似
+     *
      *     3.流中元xxx素属性计算平均值、求和、xxx属性汇总
      *          Int/Long/Double相似
      *          collect(Collectors.averagingDouble(Emp::getSalary))
      *          collect(Collectors.summingDouble(Emp::getSalary)) 返回Double类
      *          collect(Collectors.summarizingDouble(Emp::getSalary)) 返回值DoubleSummaryStatistics 汇总
+     *
      *     4.连接流的字符串
      *          collect(Collectors.joining(",","name:[","]"))  连接流中的字符串
-     *     5.获取最大最小值 返回Option<T>
-     *          collect(Collectors.minBy(Comparator.comparingDouble(Emp::getSalary)));
-     *          max/minBy 类似
-     *     6.收集器的规约 获取单个值
-     *          collect(Collectors.reducing(0.0, Emp::getSalary, Double::sum))  流中的元素 收集结合为 单个值
      *     7.分组
      *          根据属性对流分组
      *          collect(Collectors.groupingBy(Emp::getStatus, Collectors.groupingBy(Emp::getSex)))
      *          根据true false最流分组
      *          collect(Collectors.partitioningBy(e -> e.getAge() >= 25))
      *
-     *          将收集结果 进行不同类型的转化
-     *          collect(Collectors.collectingAndThen(Collectors.joining(","), String::toUpperCase))
+     *      将收集结果 进行不同类型的转化
+     *      collect(Collectors.collectingAndThen(Collectors.joining(","), String::toUpperCase))
      */
     @SneakyThrows
     @Test
@@ -352,7 +362,7 @@ public class StreamDemo {
      * 筛选与切片
      */
     private void middleOpt01() {
-        //demoFilter();
+        demoFilter();
 
         //todo 关于移除Emp @EqualsAndHashCode后 此处仍能成功过滤 李一的原因 类的成员？把李一当成一个对象引用了？
         empList.stream().distinct().forEach(System.out::println);
