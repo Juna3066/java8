@@ -2,8 +2,14 @@ package org.jun.practice.datatime;
 
 import org.junit.Test;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
+import java.util.Set;
 
 /***
  *
@@ -17,15 +23,46 @@ import java.time.temporal.TemporalAdjusters;
  *  03. Period
  *      Duration
  *
- *  Temporal Adjuster
+ *  04. Temporal Adjuster
  *
- *  DateTimeFormatter
+ *  05.DateTimeFormatter
  *      format
  *      parse
  *
- *  Zone[Date/Time/DateTime]
+ *  06.Zone[Date/Time/DateTime]
+ *      带时区的时间，时区ID:{区域}/{城市}
+ *          of(id)
+ *          getAvailableZoneId
+ *
+ *  07.日期转化
+ *
  */
 public class DateTImeDemo {
+
+
+    /**
+     *  老->新 都是 oldX.toNewX
+     *
+     *  新->老 调用工具类 静态方法
+     *  java.time.Instant -> java.util.Date              Date.from(instance)
+     *  java.time.Instant -> java.sql.Timestamp          Timestamp.from(instance)
+     *  java.time.LocalDateTime 和 java.sql.Timestamp    Timestamp.valueOf(ldt)
+     *  java.time.LocalDate -> java.sql.Date             Date.valueOf(ld)
+     *  java.time.LocalTime -> java.sql.Time             Time.valueOf(ld)
+     *
+     * todo java.sql.Date java.util.Date区别？
+     */
+    @Test
+    public void demo08() {
+        Date date = Date.from(Instant.now());
+        java.sql.Timestamp timestamp = Timestamp.from(Instant.now());
+        java.sql.Timestamp timestamp1 = Timestamp.valueOf(LocalDateTime.now());
+        java.sql.Date date1 = java.sql.Date.valueOf(LocalDate.now());
+        java.sql.Time time1 = Time.valueOf(LocalTime.now());
+
+
+    }
+
 
     /**
      * 01. Local[Date/Time/DateTime]
@@ -39,6 +76,7 @@ public class DateTImeDemo {
      *      创建
      *          now
      *          of
+     *          from 补充
      *      加减
      *          [plus/minus][Days/Weeks/Months/Years]
      *      加减Duration/Period
@@ -146,5 +184,62 @@ public class DateTImeDemo {
         });
 
         System.out.println("res = " + res);
+    }
+
+    /**
+     * 格式化 解析
+     */
+    @Test
+    public void demo5() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss E");
+        LocalDateTime ldt = LocalDateTime.now();
+        System.out.println("now = " + ldt);
+        String format = dtf.format(ldt);
+        System.out.println("format = " + format);
+
+        LocalDateTime parse = ldt.parse(format, dtf);
+        System.out.println("parse = " + parse);
+
+        TemporalAccessor parse1 = dtf.parse(format);
+        System.out.println("parse1 = " + parse1);
+
+        LocalDateTime from = LocalDateTime.from(parse1);
+        System.out.println("from = " + from);
+
+    }
+
+
+    /**
+     * 带时区的
+     *      日期 时间
+     */
+    @Test
+    public void demo6() {
+        //zoneId();
+        //从指定时区的系统时钟中获取当前日期时间。
+        LocalDateTime ldt = LocalDateTime.now(ZoneId.of("US/Alaska"));
+        System.out.println("ldt = " + ldt);
+
+
+        ZonedDateTime now = ZonedDateTime.now();
+        System.out.println("now = " + now);
+        ZonedDateTime now1 = ZonedDateTime.now(ZoneId.of("US/Alaska"));
+        System.out.println("now1 = " + now1);
+    }
+
+    /**
+     * 时区
+     */
+    private static void zoneId() {
+        Set<String> zoneIds = ZoneId.getAvailableZoneIds();
+        //System.out.println("zoneIds = " + zoneIds);
+        /*Iterator<String> iterator = zoneIds.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }*/
+        //外部循环
+        //zoneIds.forEach(System.out::println);
+        //内部循环
+        zoneIds.stream().forEach(System.out::println);
     }
 }
