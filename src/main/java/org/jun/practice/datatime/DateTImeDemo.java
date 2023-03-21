@@ -50,7 +50,11 @@ public class DateTImeDemo {
      *  java.time.LocalDate -> java.sql.Date             Date.valueOf(ld)
      *  java.time.LocalTime -> java.sql.Time             Time.valueOf(ld)
      *
-     * todo java.sql.Date java.util.Date区别？
+     * java.sql.Date java.util.Date区别？
+     *      java.sql.Date extends java.util.Date,且不包含时间、只有日期。
+     *      如果需要表示日期、时间，且不需要和数据库交互，则用java.util.Date
+     *      需要和数据库交互，用java.sql.Date
+     *
      */
     @Test
     public void demo08() {
